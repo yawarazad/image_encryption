@@ -1,10 +1,10 @@
 classdef image_encryption
-      properties   %¶¨ÒåÀà±äÁ¿
-         plaintext_img        %Ã÷ÎÄÍ¼Ïñ
-%          ciphertext_img    %ÃÜÎÄÍ¼Ïñ
-         m          %ĞĞÊı
-	     n          %ÁĞÊı 
-         chaos_sequence     %»ìãçĞòÁĞ
+      properties   %å®šä¹‰ç±»å˜é‡
+         plaintext_img        %æ˜æ–‡å›¾åƒ
+%          ciphertext_img    %å¯†æ–‡å›¾åƒ
+         m                   %è¡Œæ•°
+	 n                   %åˆ—æ•° 
+         chaos_sequence     %æ··æ²Œåºåˆ—
       end   
      
       methods
@@ -16,7 +16,7 @@ classdef image_encryption
             obj.chaos_sequence = chaos_sequence; 
         end
         
-         %Í¼Ïñ¼ÓÃÜ
+         %å›¾åƒåŠ å¯†
          function [blur_img]=encryption(obj)
                 N0 = obj.m * obj.n / 2;
                 N = obj.m * obj.n;
@@ -27,7 +27,7 @@ classdef image_encryption
                     k2(2*i) = mod(round((obj.chaos_sequence(i,4) - floor(obj.chaos_sequence(i,4)))*1e14),256);
                 end
 
-                [k1_new,Ik1] = sort(k1);        %¼ÆËãk1ÉıĞòÅÅÁĞµÄË÷ÒıĞòÁĞ
+                [k1_new,Ik1] = sort(k1);        %è®¡ç®—k1å‡åºæ’åˆ—çš„ç´¢å¼•åºåˆ—
 
                 S = reshape(obj.plaintext_img,N,1);
 
@@ -35,13 +35,13 @@ classdef image_encryption
                     B(i) = S(Ik1(i));
                 end
                
-                BS = dec2bin(B);          %Ê®½øÖÆÊı×ª¶ş½øÖÆ
+                BS = dec2bin(B);          %åè¿›åˆ¶æ•°è½¬äºŒè¿›åˆ¶
                 C = BS;
                 C(:,1) = BS(:,5);
                 C(:,5) = BS(:,1);
                 C(:,3) = BS(:,7);
                 C(:,7) = BS(:,3);
-                SS = bin2dec(C);          %¶ş½øÖÆÊı×ªÊ®½øÖÆ
+                SS = bin2dec(C);          %äºŒè¿›åˆ¶æ•°è½¬åè¿›åˆ¶
 
                 for i = 1 : N
                     D(i) = bitxor(SS(i),k2(i));
@@ -53,7 +53,7 @@ classdef image_encryption
                 E(:,6) = DS(:,2);
                 E(:,4) = DS(:,8);
                 E(:,8) = DS(:,4);
-                SS_NEW = bin2dec(E);          %¶ş½øÖÆÊı×ªÊ®½øÖÆ
+                SS_NEW = bin2dec(E);          %äºŒè¿›åˆ¶æ•°è½¬åè¿›åˆ¶
 
                 for i = 1 : N0
                     k3(2*i -1) = mod(round((obj.chaos_sequence(i,1) - floor(obj.chaos_sequence(i,1)))*1e14),256);
@@ -142,36 +142,36 @@ classdef image_encryption
           end
               
         
-        % ¼ÆËãÍ¼ÏñÈı¸ö·½ÏòµÄÏàÁÚÏñËØµã
+        % è®¡ç®—å›¾åƒä¸‰ä¸ªæ–¹å‘çš„ç›¸é‚»åƒç´ ç‚¹
         function [records_pixel]=near_pixel(obj, img)
               k=1;
              for i =1 : obj.m-1
                  for j = 1 : obj.n-1
                      xk(k) = img(i,j);
-                     xk_horizontal(k) = img(i+1,j);      %(i,j)Î»ÖÃÏñËØµãµÄË®Æ½·½Ïò
-                     xk_verital(k) = img(i,j+1);      %(i,j)Î»ÖÃÏñËØµãµÄ´¹Ö±·½Ïò
-                     xk_diag(k) = img(i+1,j+1);      %(i,j)Î»ÖÃÏñËØµãµÄ¶Ô½ÇÏß·½Ïò
+                     xk_horizontal(k) = img(i+1,j);      %(i,j)ä½ç½®åƒç´ ç‚¹çš„æ°´å¹³æ–¹å‘
+                     xk_verital(k) = img(i,j+1);      %(i,j)ä½ç½®åƒç´ ç‚¹çš„å‚ç›´æ–¹å‘
+                     xk_diag(k) = img(i+1,j+1);      %(i,j)ä½ç½®åƒç´ ç‚¹çš„å¯¹è§’çº¿æ–¹å‘
                      k=k+1;
                  end
              end
              records_pixel = [xk;xk_horizontal;xk_verital;xk_diag]';
          end
         
-        %¼ÆËãÍ¼ÏñĞÅÏ¢ìØ
+        %è®¡ç®—å›¾åƒä¿¡æ¯ç†µ
         function [H_x]=energy_shan(obj,img)
-                 G=256;              %Í¼ÏñµÄ»Ò¶È¼¶   
+                 G=256;              %å›¾åƒçš„ç°åº¦çº§   
                  H_x = 0;
                  nk = zeros(G,1);
                  for i =1 : obj.m
                      for j = 1 : obj.n
-                         img_level = img(i,j) +1 ; %»ñÈ¡Í¼ÏñµÄ»Ò¶È¼¶µÄµãÊı
+                         img_level = img(i,j) +1 ; %è·å–å›¾åƒçš„ç°åº¦çº§çš„ç‚¹æ•°
                          nk(img_level) = nk(img_level) +1;
                      end
                  end
                for k =1 : G
-                   PS(k) = nk(k)/(obj.m * obj.n);         %¼ÆËãÃ¿¸öÏñËØµãµÄ¸ÅÂÊ
+                   PS(k) = nk(k)/(obj.m * obj.n);         %è®¡ç®—æ¯ä¸ªåƒç´ ç‚¹çš„æ¦‚ç‡
                    if(PS(k)~= 0)
-                       H_x = - PS(k)*log2(PS(k)) + H_x;   %ÇóìØ¹«Ê½
+                       H_x = - PS(k)*log2(PS(k)) + H_x;   %æ±‚ç†µå…¬å¼
                    end
                end
         end
