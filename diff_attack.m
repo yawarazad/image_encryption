@@ -1,4 +1,4 @@
-%¿¹²î·Ö¹¥»÷·ÖÎö
+%æŠ—å·®åˆ†æ”»å‡»åˆ†æž
 function [NPCR,UACI]= diff_attack (A,B)
         [m,n] = size(A);
         for i =1:m
