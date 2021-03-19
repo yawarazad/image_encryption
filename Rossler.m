@@ -1,4 +1,4 @@
-%%% Rossler»ìãçÏµÍ³%%%
+%%% Rosslerè¶…æ··æ²Œç³»ç»Ÿ%%%
 function dy = Rossler(t,y)
     a = 0.25;
     b = 3;
