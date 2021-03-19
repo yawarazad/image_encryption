@@ -1,5 +1,4 @@
-
-%%% Lorenz»ìãçÏµÍ³%%%
+%%% Lorenzè¶…æ··æ²Œç³»ç»Ÿ%%%
 function dy = Lorenz(t,y)
     a = 10;
     b = 8/3;
