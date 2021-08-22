@@ -1,4 +1,4 @@
-D+Invoice Date, -Quantity, -Price, +Country
+D+PostingDate, -Quantity, -Price, +Country
 2018-05-15, 3, 329, France
 2018-05-16, 4, 139, Italy
 2018-05-17, 2, 429, Spain
